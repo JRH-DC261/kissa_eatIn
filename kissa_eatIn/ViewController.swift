@@ -1,9 +1,9 @@
 //
 //  ViewController.swift
-//  test
+//  kissa_eatIn
 //
 //  Created by Kei Kawamura on 2018/09/03.
-//  Copyright © 2018年 Kei Kawamura. All rights reserved.
+//  Copyright © 2018 Kei Kawamura / 2019 Tomohiro Hori . All rights reserved.
 //
 
 import UIKit
@@ -13,7 +13,7 @@ import Firebase
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var TableView: UITableView!
     let number = ["001","002","003","004","005","006","007","008","009","010","011","012","013","014","015","016","017","018"]
-    var tablenumber : String?
+    var tableNumber : String?
     // インスタンス変数
     var DBRef:DatabaseReference!
     
@@ -25,7 +25,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         // セルを取得する
         let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "MainCell", for: indexPath)
         // セルに表示する値を設定する
-        cell.textLabel!.text = "Table" + number[indexPath.row]
+        cell.textLabel!.text = "Table " + number[indexPath.row]
+        cell.detailTextLabel!.text = "空席"
         //席ステータス表示
         var status1 : String?
         var intstatus1 : Int?
@@ -33,26 +34,27 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         defaultPlace.observe(.value) { (snap: DataSnapshot) in status1 = (snap.value! as AnyObject).description
         intstatus1 = Int(status1!)
             if intstatus1! == 0{
-                cell.contentView.backgroundColor = UIColor.clear
+                cell.detailTextLabel!.text = "空席"
             }else if intstatus1! == 1{
-                cell.contentView.backgroundColor = UIColor.yellow
+                cell.detailTextLabel!.text = "注文完了"
             }else if intstatus1! == 2{
-                cell.contentView.backgroundColor = UIColor.magenta
+                cell.detailTextLabel!.text = "配膳待ち"
             }else if intstatus1! == 3{
-                cell.contentView.backgroundColor = UIColor.red
+                cell.detailTextLabel!.text = "食事配膳完了"
             }else if intstatus1! == 4{
-                cell.contentView.backgroundColor = UIColor.cyan
+                cell.detailTextLabel!.text = "全注文配膳完了"
             }
         }
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tablenumber = number[indexPath.row]
+        tableNumber = number[indexPath.row]
         //設定
-        //self.DBRef.child("table/order").child(self.number[indexPath.row]).setValue(["b1amount":0,"b2amount":0,"s1amount":0,"s2amount":0,"s3amount":0,"d1amount":0,"d2amount":0,"d3amount":0,"d4amount":0,"dx1amount":0,"dx2amount":0,"dx3amount":0,"dx4amount":0,"de1amount":0,"de2amount":0,"de3amount":0,"de4amount":0,"time":0])
-        //self.DBRef.child("table/allorder").setValue(["allb1amount":0,"allb2amount":0,"alls1amount":0,"alls2amount":0,"alls3amount":0,"alld1amount":0,"alld2amount":0,"alld3amount":0,"alld4amount":0,"alldx1amount":0,"alldx2amount":0,"alldx3amount":0,"alldx4amount":0,"allde1amount":0,"allde2amount":0,"allde3amount":0])
+//        self.DBRef.child("table/order").child(self.number[indexPath.row]).setValue(["W1Amount":0, "W2Amount":0, "P1Amount":0, "P2Amount":0, "S1Amount":0, "S2Amount":0, "S3Amount":0, "D1Amount":0, "time":0])
+//        self.DBRef.child("table/allOrder").setValue(["allW1Amount":0, "allW2Amount":0, "allP1Amount":0, "allP2Amount":0, "allS1Amount":0, "allS2Amount":0, "allS3Amount":0, "allD1Amount":0])
         //self.DBRef.child("table/status").child(self.number[indexPath.row]).setValue(0)
+        
         //self.DBRef.child("table/bstatus").child(self.number[indexPath.row]).setValue(0)
         //self.DBRef.child("table/tbstatus").child(self.number[indexPath.row]).setValue(0)
         //self.DBRef.child("table/sstatus").child(self.number[indexPath.row]).setValue(0)
@@ -61,7 +63,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         //self.DBRef.child("table/destatus").child(self.number[indexPath.row]).setValue(0)
         //self.DBRef.child("table/setamount").child(self.number[indexPath.row]).setValue(["bset":0,"sset":0,"bsset":0,"noice":0])
         
-        performSegue(withIdentifier:"tonextview", sender: nil)
+        performSegue(withIdentifier:"toNextView", sender: nil)
         tableView.deselectRow(at: indexPath, animated:true)
     }
     
@@ -69,8 +71,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func  prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let nextVC = segue.destination as! SubViewController
         let _ = nextVC.view
-        nextVC.tableNumberLabel.text = "Table\(tablenumber!)"
-        nextVC.tableNumber = "\(tablenumber!)"
+        nextVC.navigationItem.title = "Table " + tableNumber!
+        nextVC.tableNumber = tableNumber!
     }
     
     override func viewDidLoad() {

@@ -1,9 +1,9 @@
 //
 //  AppDelegate.swift
-//  test
+//  kissa_eatIn
 //
 //  Created by Kei Kawamura on 2018/09/03.
-//  Copyright © 2018年 Kei Kawamura. All rights reserved.
+//  Copyright © 2018 Kei Kawamura / 2019 Tomohiro Hori . All rights reserved.
 //
 
 import UIKit
