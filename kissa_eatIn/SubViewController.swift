@@ -21,7 +21,6 @@ class SubViewController: UITableViewController{
     @IBOutlet weak var S3AmountLabel: UILabel!
     @IBOutlet weak var D1AmountLabel: UILabel!
     
-    
     @IBOutlet weak var W1StepperValue: UIStepper!
     @IBOutlet weak var W2StepperValue: UIStepper!
     @IBOutlet weak var P1StepperValue: UIStepper!
@@ -40,21 +39,24 @@ class SubViewController: UITableViewController{
     @IBOutlet weak var AllS3AmountLabel: UILabel!
     @IBOutlet weak var AllD1AmountLabel: UILabel!
     
-//    @IBOutlet weak var BStatus: UILabel!
-//    @IBOutlet weak var SStatus: UILabel!
-//    @IBOutlet weak var DStatus: UILabel!
-//    @IBOutlet weak var DXStatus: UILabel!
-//    @IBOutlet weak var DeStatus: UILabel!
+    @IBOutlet weak var orderButton: UIBarButtonItem!
+    @IBOutlet weak var cancelButton: UIBarButtonItem!
+    
+    //    @IBOutlet weak var BStatus: UILabel!
+    //    @IBOutlet weak var SStatus: UILabel!
+    //    @IBOutlet weak var DStatus: UILabel!
+    //    @IBOutlet weak var DXStatus: UILabel!
+    //    @IBOutlet weak var DeStatus: UILabel!
     
     var tableNumber : String?
     var DBRef1:DatabaseReference!
     var status : String?
     var status2 : String?
     var intstatus2 : Int?
-//    var Bstatus : String?
-//    var Pstatus : String?
-//    var Sstatus : String?
-//    var Dstatus : String?
+    //    var Bstatus : String?
+    //    var Pstatus : String?
+    //    var Sstatus : String?
+    //    var Dstatus : String?
     var W1Amount : String?
     var W2Amount : String?
     var P1Amount : String?
@@ -129,7 +131,7 @@ class SubViewController: UITableViewController{
         self.PAmount = Int(self.P1AmountLabel.text!)! + Int(self.P2AmountLabel.text!)!
         self.SAmount = Int(self.S1AmountLabel.text!)! + Int(self.S2AmountLabel.text!)! + Int(self.S3AmountLabel.text!)!
         self.DAmount = Int(self.D1AmountLabel.text!)!
-
+        
         let alertController1 = UIAlertController(title: "注文",message: "", preferredStyle: UIAlertController.Style.alert)
         let okAction1 = UIAlertAction(title: "OK", style: UIAlertAction.Style.default){ (action: UIAlertAction) in
             let defaultPlacex = self.DBRef1.child("table/status").child(self.tableNumber!)
@@ -164,11 +166,11 @@ class SubViewController: UITableViewController{
                     //            self.Ssetamount = self.damount - self.bamount
                     //            self.BSsetamount = self.bamount + self.samount - self.damount
                     //            self.noIceAmount = self.damount - self.deamount
-
+                    
                     self.DBRef1.child("table/order").child(self.tableNumber!).setValue(["W1Amount":self.W1Amount!, "W2Amount":self.W2Amount!, "P1Amount":self.P1Amount!, "P2Amount":self.P2Amount!, "S1Amount":self.S1Amount!, "S2Amount":self.S2Amount!, "S3Amount":self.S3Amount!, "D1Amount":self.D1Amount!, "time":ServerValue.timestamp()])
                     self.DBRef1.child("table/status").child(self.tableNumber!).setValue(1)
                     //                    self.DBRef1.child("table/setamount").child(self.tableNumber!).setValue(["bset":self.Bsetamount,"sset":self.Ssetamount,"bsset":self.BSsetamount,"noice":self.noIceAmount])
-
+                    
                     //オーダーキーの設定
                     let key = self.DBRef1.child("table/orderorder").childByAutoId().key;
                     self.DBRef1.child("table/orderorder").child(key!).setValue(self.tableNumber!)
@@ -176,7 +178,7 @@ class SubViewController: UITableViewController{
                     //データセット
                     self.DBRef1.child("inData").child(key!).setValue(["time":ServerValue.timestamp(), "table":self.tableNumber!, "W1":self.W1Amount!, "W2":self.W2Amount!, "P1":self.P1Amount!, "P2":self.P2Amount!, "S1":self.S1Amount!, "S2":self.S2Amount!, "S3":self.S3Amount!, "D1":self.D1Amount!])
                     //"bset":self.Bsetamount,"sset":self.Ssetamount,"bsset":self.BSsetamount,"noice":self.noIceAmount]
-
+                    
                     //全食数の更新
                     let defaultPlaceW1 = self.DBRef1.child("table/allOrder/allW1Amount")
                     defaultPlaceW1.observeSingleEvent(of: .value, with: { (snapshot) in
@@ -228,20 +230,20 @@ class SubViewController: UITableViewController{
                     })
                 }})}
         let cancelButton1 = UIAlertAction(title: "キャンセル", style: UIAlertAction.Style.cancel, handler: nil)
-
+        
         alertController1.addAction(okAction1)
         alertController1.addAction(cancelButton1)
         present(alertController1,animated: true,completion: nil)
     }
-
-
+    
+    
     @IBAction func dlete(_ sender: Any) {
         self.WAmount = Int(self.W1AmountLabel.text!)! + Int(self.W2AmountLabel.text!)!
         self.PAmount = Int(self.P1AmountLabel.text!)! + Int(self.P2AmountLabel.text!)!
         self.SAmount = Int(self.S1AmountLabel.text!)! + Int(self.S2AmountLabel.text!)! + Int(self.S3AmountLabel.text!)!
         self.DAmount = Int(self.D1AmountLabel.text!)!
-
-        let alertController3 = UIAlertController(title: "削除",message: "", preferredStyle: UIAlertController.Style.alert)
+        
+        let alertController3 = UIAlertController(title: "キャンセル",message: "", preferredStyle: UIAlertController.Style.alert)
         let okAction3 = UIAlertAction(title: "OK", style: UIAlertAction.Style.default){ (action: UIAlertAction) in
             //self.Ssetamount = self.damount - self.bamount
             //全食数の更新
@@ -301,15 +303,15 @@ class SubViewController: UITableViewController{
                 self.DBRef1.child("table/allOrder/allD1Amount").setValue(self.newAllD1Amount)
                 self.DBRef1.child("table/order").child(self.tableNumber!).child("D1Amount").setValue(0)
             })
-
+            
             //オーダーリセット
             self.DBRef1.child("table/order").child(self.tableNumber!).child("time").setValue(0)
             self.DBRef1.child("table/order").child(self.tableNumber!).child("completetime").setValue(0)
-//            self.DBRef1.child("table/status").child(self.tableNumber!).setValue(0)
-//            self.DBRef1.child("table/WStatus").child(self.tableNumber!).setValue(0)
-//            self.DBRef1.child("table/PStatus").child(self.tableNumber!).setValue(0)
-//            self.DBRef1.child("table/SStatus").child(self.tableNumber!).setValue(0)
-//            self.DBRef1.child("table/DStatus").child(self.tableNumber!).setValue(0)
+            self.DBRef1.child("table/status").child(self.tableNumber!).setValue(0)
+            //            self.DBRef1.child("table/WStatus").child(self.tableNumber!).setValue(0)
+            //            self.DBRef1.child("table/PStatus").child(self.tableNumber!).setValue(0)
+            //            self.DBRef1.child("table/SStatus").child(self.tableNumber!).setValue(0)
+            //            self.DBRef1.child("table/DStatus").child(self.tableNumber!).setValue(0)
             //self.DBRef1.child("table/setamount").child(self.tableNumber!).setValue(["bset":0,"sset":0,"bsset":0,"noice":0])
             //オーダーキーのリセット
             var hogekey : String?
@@ -322,7 +324,7 @@ class SubViewController: UITableViewController{
             })
         }
         let cancelButton3 = UIAlertAction(title: "キャンセル", style: UIAlertAction.Style.cancel, handler: nil)
-
+        
         alertController3.addAction(okAction3)
         alertController3.addAction(cancelButton3)
         present(alertController3,animated: true,completion: nil)
@@ -339,16 +341,30 @@ class SubViewController: UITableViewController{
             userInfo: nil,
             repeats: false
         )
-//        Timer.scheduledTimer(
-//            timeInterval: 0.1,
-//            target: self,
-//            selector: #selector(self.status(_:)),
-//            userInfo: nil,
-//            repeats: false
-//        )
+        //        Timer.scheduledTimer(
+        //            timeInterval: 0.1,
+        //            target: self,
+        //            selector: #selector(self.status(_:)),
+        //            userInfo: nil,
+        //            repeats: false
+        //        )
     }
-    //初期値取得
+    
     @objc func amountload(_ sender: Timer) {
+        //注文ボタン
+        let defaultPlace = DBRef1.child("table/status").child(tableNumber!)
+        defaultPlace.observe(DataEventType.value, with: { (snapshot) in
+            self.status = (snapshot.value! as AnyObject).description
+            if Int(self.status!) == 0{
+                self.orderButton.isEnabled = true
+                self.cancelButton.isEnabled = false
+            }else{
+                self.orderButton.isEnabled = false
+                self.cancelButton.isEnabled = true
+            }
+        })
+        
+        //初期値取得
         let defaultPlaceW1 = DBRef1.child("table/order").child(tableNumber!).child("W1Amount")
         defaultPlaceW1.observeSingleEvent(of: .value, with: { (snapshot) in self.W1Amount = (snapshot.value! as AnyObject).description
             self.W1AmountLabel.text = self.W1Amount!
@@ -425,60 +441,60 @@ class SubViewController: UITableViewController{
         })
     }
     
-//    @objc func status(_ sender: Timer) {
-//        let defaultPlace = DBRef1.child("table/bstatus").child(self.tableNumber!)
-//        defaultPlace.observe(.value) { (snap: DataSnapshot) in self.bstatus = (snap.value! as AnyObject).description
-//            if Int(self.bstatus!) == 1{
-//                self.BStatus.backgroundColor = UIColor.magenta
-//            }else if Int(self.bstatus!) == 2{
-//                self.BStatus.backgroundColor = UIColor.cyan
-//            }else{
-//                self.BStatus.backgroundColor = UIColor.white
-//            }
-//        }
-//        let defaultPlace1 = DBRef1.child("table/sstatus").child(self.tableNumber!)
-//        defaultPlace1.observe(.value) { (snap: DataSnapshot) in self.sstatus = (snap.value! as AnyObject).description
-//            if Int(self.sstatus!) == 1{
-//                self.SStatus.backgroundColor = UIColor.magenta
-//            }else if Int(self.sstatus!) == 2{
-//                self.SStatus.backgroundColor = UIColor.cyan
-//            }else{
-//                self.SStatus.backgroundColor = UIColor.white
-//            }
-//        }
-//        let defaultPlace2 = DBRef1.child("table/dstatus").child(self.tableNumber!)
-//        defaultPlace2.observe(.value) { (snap: DataSnapshot) in self.dstatus = (snap.value! as AnyObject).description
-//            if Int(self.dstatus!) == 1{
-//                self.DStatus.backgroundColor = UIColor.magenta
-//            }else if Int(self.dstatus!) == 2{
-//                self.DStatus.backgroundColor = UIColor.cyan
-//            }else{
-//                self.DStatus.backgroundColor = UIColor.white
-//            }
-//        }
-//        let defaultPlace4 = DBRef1.child("table/dxstatus").child(self.tableNumber!)
-//        defaultPlace4.observe(.value) { (snap: DataSnapshot) in self.dxstatus = (snap.value! as AnyObject).description
-//            if Int(self.dxstatus!) == 1{
-//                self.DXStatus.backgroundColor = UIColor.magenta
-//            }else if Int(self.dxstatus!) == 2{
-//                self.DXStatus.backgroundColor = UIColor.cyan
-//            }else{
-//                self.DXStatus.backgroundColor = UIColor.white
-//            }
-//        }
-//        let defaultPlace3 = DBRef1.child("table/destatus").child(self.tableNumber!)
-//        defaultPlace3.observe(.value) { (snap: DataSnapshot) in self.destatus = (snap.value! as AnyObject).description
-//            if Int(self.destatus!) == 1{
-//                self.DeStatus.backgroundColor = UIColor.magenta
-//            }else if Int(self.destatus!) == 2{
-//                self.DeStatus.backgroundColor = UIColor.cyan
-//            }else{
-//                self.DeStatus.backgroundColor = UIColor.white
-//            }
-//        }
-//
-//
-//    }
+    //    @objc func status(_ sender: Timer) {
+    //        let defaultPlace = DBRef1.child("table/bstatus").child(self.tableNumber!)
+    //        defaultPlace.observe(.value) { (snap: DataSnapshot) in self.bstatus = (snap.value! as AnyObject).description
+    //            if Int(self.bstatus!) == 1{
+    //                self.BStatus.backgroundColor = UIColor.magenta
+    //            }else if Int(self.bstatus!) == 2{
+    //                self.BStatus.backgroundColor = UIColor.cyan
+    //            }else{
+    //                self.BStatus.backgroundColor = UIColor.white
+    //            }
+    //        }
+    //        let defaultPlace1 = DBRef1.child("table/sstatus").child(self.tableNumber!)
+    //        defaultPlace1.observe(.value) { (snap: DataSnapshot) in self.sstatus = (snap.value! as AnyObject).description
+    //            if Int(self.sstatus!) == 1{
+    //                self.SStatus.backgroundColor = UIColor.magenta
+    //            }else if Int(self.sstatus!) == 2{
+    //                self.SStatus.backgroundColor = UIColor.cyan
+    //            }else{
+    //                self.SStatus.backgroundColor = UIColor.white
+    //            }
+    //        }
+    //        let defaultPlace2 = DBRef1.child("table/dstatus").child(self.tableNumber!)
+    //        defaultPlace2.observe(.value) { (snap: DataSnapshot) in self.dstatus = (snap.value! as AnyObject).description
+    //            if Int(self.dstatus!) == 1{
+    //                self.DStatus.backgroundColor = UIColor.magenta
+    //            }else if Int(self.dstatus!) == 2{
+    //                self.DStatus.backgroundColor = UIColor.cyan
+    //            }else{
+    //                self.DStatus.backgroundColor = UIColor.white
+    //            }
+    //        }
+    //        let defaultPlace4 = DBRef1.child("table/dxstatus").child(self.tableNumber!)
+    //        defaultPlace4.observe(.value) { (snap: DataSnapshot) in self.dxstatus = (snap.value! as AnyObject).description
+    //            if Int(self.dxstatus!) == 1{
+    //                self.DXStatus.backgroundColor = UIColor.magenta
+    //            }else if Int(self.dxstatus!) == 2{
+    //                self.DXStatus.backgroundColor = UIColor.cyan
+    //            }else{
+    //                self.DXStatus.backgroundColor = UIColor.white
+    //            }
+    //        }
+    //        let defaultPlace3 = DBRef1.child("table/destatus").child(self.tableNumber!)
+    //        defaultPlace3.observe(.value) { (snap: DataSnapshot) in self.destatus = (snap.value! as AnyObject).description
+    //            if Int(self.destatus!) == 1{
+    //                self.DeStatus.backgroundColor = UIColor.magenta
+    //            }else if Int(self.destatus!) == 2{
+    //                self.DeStatus.backgroundColor = UIColor.cyan
+    //            }else{
+    //                self.DeStatus.backgroundColor = UIColor.white
+    //            }
+    //        }
+    //
+    //
+    //    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
