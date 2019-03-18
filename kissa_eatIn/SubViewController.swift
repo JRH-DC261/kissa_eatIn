@@ -132,103 +132,85 @@ class SubViewController: UITableViewController{
         self.SAmount = Int(self.S1AmountLabel.text!)! + Int(self.S2AmountLabel.text!)! + Int(self.S3AmountLabel.text!)!
         self.DAmount = Int(self.D1AmountLabel.text!)!
         
-        let alertController1 = UIAlertController(title: "注文",message: "", preferredStyle: UIAlertController.Style.alert)
+        let alertController1 = UIAlertController(title: "注文送信",message: "注文を確定します\n変更は注文取消後に行ってください", preferredStyle: UIAlertController.Style.alert)
         let okAction1 = UIAlertAction(title: "OK", style: UIAlertAction.Style.default){ (action: UIAlertAction) in
-            let defaultPlacex = self.DBRef1.child("table/status").child(self.tableNumber!)
-            defaultPlacex.observeSingleEvent(of: .value, with: { (snapshot) in
-                self.status = (snapshot.value! as AnyObject).description
-                if Int(self.status!) == 1{
-                    let alertController = UIAlertController(title: "変更はキャンセル後に行ってください",message: "", preferredStyle: UIAlertController.Style.alert)
-                    let OKButton = UIAlertAction(title: "OK", style: UIAlertAction.Style.cancel, handler: nil)
-                    alertController.addAction(OKButton)
-                    self.present(alertController,animated: true,completion: nil)
-                }else if Int(self.status!) == 2 || Int(self.status!) == 3 || Int(self.status!) == 4{
-                    let alertController = UIAlertController(title: "調理中の商品があります",message: "誰かにいってね", preferredStyle: UIAlertController.Style.alert)
-                    let OKButton = UIAlertAction(title: "OK", style: UIAlertAction.Style.cancel, handler: nil)
-                    alertController.addAction(OKButton)
-                    self.present(alertController,animated: true,completion: nil)
-                    //                }else if self.damount < self.samount||self.damount < self.bamount||self.bamount + self.samount < self.damount{
-                    //                    let alertController = UIAlertController(title: "注文が無効です",message: "", preferredStyle: UIAlertController.Style.alert)
-                    //                    let OKButton = UIAlertAction(title: "OK", style: UIAlertAction.Style.cancel, handler: nil)
-                    //                    alertController.addAction(OKButton)
-                    //                    self.present(alertController,animated: true,completion: nil)
-                }else{
-                    //オーダーの入力
-                    self.W1Amount = self.W1AmountLabel.text
-                    self.W2Amount = self.W2AmountLabel.text
-                    self.P1Amount = self.P1AmountLabel.text
-                    self.P2Amount = self.P2AmountLabel.text
-                    self.S1Amount = self.S1AmountLabel.text
-                    self.S2Amount = self.S2AmountLabel.text
-                    self.S3Amount = self.S3AmountLabel.text
-                    self.D1Amount = self.D1AmountLabel.text
-                    //            self.Bsetamount = self.damount - self.samount
-                    //            self.Ssetamount = self.damount - self.bamount
-                    //            self.BSsetamount = self.bamount + self.samount - self.damount
-                    //            self.noIceAmount = self.damount - self.deamount
-                    
-                    self.DBRef1.child("table/order").child(self.tableNumber!).setValue(["W1Amount":self.W1Amount!, "W2Amount":self.W2Amount!, "P1Amount":self.P1Amount!, "P2Amount":self.P2Amount!, "S1Amount":self.S1Amount!, "S2Amount":self.S2Amount!, "S3Amount":self.S3Amount!, "D1Amount":self.D1Amount!, "time":ServerValue.timestamp()])
-                    self.DBRef1.child("table/status").child(self.tableNumber!).setValue(1)
-                    //                    self.DBRef1.child("table/setamount").child(self.tableNumber!).setValue(["bset":self.Bsetamount,"sset":self.Ssetamount,"bsset":self.BSsetamount,"noice":self.noIceAmount])
-                    
-                    //オーダーキーの設定
-                    let key = self.DBRef1.child("table/orderorder").childByAutoId().key;
-                    self.DBRef1.child("table/orderorder").child(key!).setValue(self.tableNumber!)
-                    self.DBRef1.child("table/orderkey").child(self.tableNumber!).setValue(key)
-                    //データセット
-                    self.DBRef1.child("inData").child(key!).setValue(["time":ServerValue.timestamp(), "table":self.tableNumber!, "W1":self.W1Amount!, "W2":self.W2Amount!, "P1":self.P1Amount!, "P2":self.P2Amount!, "S1":self.S1Amount!, "S2":self.S2Amount!, "S3":self.S3Amount!, "D1":self.D1Amount!])
-                    //"bset":self.Bsetamount,"sset":self.Ssetamount,"bsset":self.BSsetamount,"noice":self.noIceAmount]
-                    
-                    //全食数の更新
-                    let defaultPlaceW1 = self.DBRef1.child("table/allOrder/allW1Amount")
-                    defaultPlaceW1.observeSingleEvent(of: .value, with: { (snapshot) in
-                        self.allW1Amount = (snapshot.value! as AnyObject).description
-                        self.newAllW1Amount = Int(self.allW1Amount!)! - Int(self.W1Amount!)!
-                        self.DBRef1.child("table/allOrder/allW1Amount").setValue(self.newAllW1Amount)
-                    })
-                    let defaultPlaceW2 = self.DBRef1.child("table/allOrder/allW2Amount")
-                    defaultPlaceW2.observeSingleEvent(of: .value, with: { (snapshot) in
-                        self.allW2Amount = (snapshot.value! as AnyObject).description
-                        self.newAllW2Amount = Int(self.allW2Amount!)! - Int(self.W2Amount!)!
-                        self.DBRef1.child("table/allOrder/allW2Amount").setValue(self.newAllW2Amount)
-                    })
-                    let defaultPlaceP1 = self.DBRef1.child("table/allOrder/allP1Amount")
-                    defaultPlaceP1.observeSingleEvent(of: .value, with: { (snapshot) in
-                        self.allP1Amount = (snapshot.value! as AnyObject).description
-                        self.newAllP1Amount = Int(self.allP1Amount!)! - Int(self.P1Amount!)!
-                        self.DBRef1.child("table/allOrder/allP1Amount").setValue(self.newAllP1Amount)
-                    })
-                    let defaultPlaceP2 = self.DBRef1.child("table/allOrder/allP2Amount")
-                    defaultPlaceP2.observeSingleEvent(of: .value, with: { (snapshot) in
-                        self.allP2Amount = (snapshot.value! as AnyObject).description
-                        self.newAllP2Amount = Int(self.allP2Amount!)! - Int(self.P2Amount!)!
-                        self.DBRef1.child("table/allOrder/allP2Amount").setValue(self.newAllP2Amount)
-                    })
-                    let defaultPlaceS1 = self.DBRef1.child("table/allOrder/allS1Amount")
-                    defaultPlaceS1.observeSingleEvent(of: .value, with: { (snapshot) in
-                        self.allS1Amount = (snapshot.value! as AnyObject).description
-                        self.newAllS1Amount = Int(self.allS1Amount!)! - Int(self.S1Amount!)!
-                        self.DBRef1.child("table/allOrder/allS1Amount").setValue(self.newAllS1Amount)
-                    })
-                    let defaultPlaceS2 = self.DBRef1.child("table/allOrder/allS2Amount")
-                    defaultPlaceS2.observeSingleEvent(of: .value, with: { (snapshot) in
-                        self.allS2Amount = (snapshot.value! as AnyObject).description
-                        self.newAllS2Amount = Int(self.allS2Amount!)! - Int(self.S2Amount!)!
-                        self.DBRef1.child("table/allOrder/allS2Amount").setValue(self.newAllS2Amount)
-                    })
-                    let defaultPlaceS3 = self.DBRef1.child("table/allOrder/allS3Amount")
-                    defaultPlaceS3.observeSingleEvent(of: .value, with: { (snapshot) in
-                        self.allS3Amount = (snapshot.value! as AnyObject).description
-                        self.newAllS3Amount = Int(self.allS3Amount!)! - Int(self.S3Amount!)!
-                        self.DBRef1.child("table/allOrder/allS3Amount").setValue(self.newAllS3Amount)
-                    })
-                    let defaultPlaceD1 = self.DBRef1.child("table/allOrder/allD1Amount")
-                    defaultPlaceD1.observeSingleEvent(of: .value, with: { (snapshot) in
-                        self.allD1Amount = (snapshot.value! as AnyObject).description
-                        self.newAllD1Amount = Int(self.allD1Amount!)! - Int(self.D1Amount!)!
-                        self.DBRef1.child("table/allOrder/allD1Amount").setValue(self.newAllD1Amount)
-                    })
-                }})}
+            
+            //オーダーの入力
+            self.W1Amount = self.W1AmountLabel.text
+            self.W2Amount = self.W2AmountLabel.text
+            self.P1Amount = self.P1AmountLabel.text
+            self.P2Amount = self.P2AmountLabel.text
+            self.S1Amount = self.S1AmountLabel.text
+            self.S2Amount = self.S2AmountLabel.text
+            self.S3Amount = self.S3AmountLabel.text
+            self.D1Amount = self.D1AmountLabel.text
+            //            self.Bsetamount = self.damount - self.samount
+            //            self.Ssetamount = self.damount - self.bamount
+            //            self.BSsetamount = self.bamount + self.samount - self.damount
+            //            self.noIceAmount = self.damount - self.deamount
+            
+            self.DBRef1.child("table/order").child(self.tableNumber!).setValue(["W1Amount":self.W1Amount!, "W2Amount":self.W2Amount!, "P1Amount":self.P1Amount!, "P2Amount":self.P2Amount!, "S1Amount":self.S1Amount!, "S2Amount":self.S2Amount!, "S3Amount":self.S3Amount!, "D1Amount":self.D1Amount!, "time":ServerValue.timestamp()])
+            self.DBRef1.child("table/status").child(self.tableNumber!).setValue(1)
+            //                    self.DBRef1.child("table/setamount").child(self.tableNumber!).setValue(["bset":self.Bsetamount,"sset":self.Ssetamount,"bsset":self.BSsetamount,"noice":self.noIceAmount])
+            
+            //オーダーキーの設定
+            let key = self.DBRef1.child("table/orderorder").childByAutoId().key;
+            self.DBRef1.child("table/orderorder").child(key!).setValue(self.tableNumber!)
+            self.DBRef1.child("table/orderkey").child(self.tableNumber!).setValue(key)
+            //データセット
+            self.DBRef1.child("inData").child(key!).setValue(["time":ServerValue.timestamp(), "table":self.tableNumber!, "W1":self.W1Amount!, "W2":self.W2Amount!, "P1":self.P1Amount!, "P2":self.P2Amount!, "S1":self.S1Amount!, "S2":self.S2Amount!, "S3":self.S3Amount!, "D1":self.D1Amount!])
+            //"bset":self.Bsetamount,"sset":self.Ssetamount,"bsset":self.BSsetamount,"noice":self.noIceAmount]
+            
+            //全食数の更新
+            let defaultPlaceW1 = self.DBRef1.child("table/allOrder/allW1Amount")
+            defaultPlaceW1.observeSingleEvent(of: .value, with: { (snapshot) in
+                self.allW1Amount = (snapshot.value! as AnyObject).description
+                self.newAllW1Amount = Int(self.allW1Amount!)! - Int(self.W1Amount!)!
+                self.DBRef1.child("table/allOrder/allW1Amount").setValue(self.newAllW1Amount)
+            })
+            let defaultPlaceW2 = self.DBRef1.child("table/allOrder/allW2Amount")
+            defaultPlaceW2.observeSingleEvent(of: .value, with: { (snapshot) in
+                self.allW2Amount = (snapshot.value! as AnyObject).description
+                self.newAllW2Amount = Int(self.allW2Amount!)! - Int(self.W2Amount!)!
+                self.DBRef1.child("table/allOrder/allW2Amount").setValue(self.newAllW2Amount)
+            })
+            let defaultPlaceP1 = self.DBRef1.child("table/allOrder/allP1Amount")
+            defaultPlaceP1.observeSingleEvent(of: .value, with: { (snapshot) in
+                self.allP1Amount = (snapshot.value! as AnyObject).description
+                self.newAllP1Amount = Int(self.allP1Amount!)! - Int(self.P1Amount!)!
+                self.DBRef1.child("table/allOrder/allP1Amount").setValue(self.newAllP1Amount)
+            })
+            let defaultPlaceP2 = self.DBRef1.child("table/allOrder/allP2Amount")
+            defaultPlaceP2.observeSingleEvent(of: .value, with: { (snapshot) in
+                self.allP2Amount = (snapshot.value! as AnyObject).description
+                self.newAllP2Amount = Int(self.allP2Amount!)! - Int(self.P2Amount!)!
+                self.DBRef1.child("table/allOrder/allP2Amount").setValue(self.newAllP2Amount)
+            })
+            let defaultPlaceS1 = self.DBRef1.child("table/allOrder/allS1Amount")
+            defaultPlaceS1.observeSingleEvent(of: .value, with: { (snapshot) in
+                self.allS1Amount = (snapshot.value! as AnyObject).description
+                self.newAllS1Amount = Int(self.allS1Amount!)! - Int(self.S1Amount!)!
+                self.DBRef1.child("table/allOrder/allS1Amount").setValue(self.newAllS1Amount)
+            })
+            let defaultPlaceS2 = self.DBRef1.child("table/allOrder/allS2Amount")
+            defaultPlaceS2.observeSingleEvent(of: .value, with: { (snapshot) in
+                self.allS2Amount = (snapshot.value! as AnyObject).description
+                self.newAllS2Amount = Int(self.allS2Amount!)! - Int(self.S2Amount!)!
+                self.DBRef1.child("table/allOrder/allS2Amount").setValue(self.newAllS2Amount)
+            })
+            let defaultPlaceS3 = self.DBRef1.child("table/allOrder/allS3Amount")
+            defaultPlaceS3.observeSingleEvent(of: .value, with: { (snapshot) in
+                self.allS3Amount = (snapshot.value! as AnyObject).description
+                self.newAllS3Amount = Int(self.allS3Amount!)! - Int(self.S3Amount!)!
+                self.DBRef1.child("table/allOrder/allS3Amount").setValue(self.newAllS3Amount)
+            })
+            let defaultPlaceD1 = self.DBRef1.child("table/allOrder/allD1Amount")
+            defaultPlaceD1.observeSingleEvent(of: .value, with: { (snapshot) in
+                self.allD1Amount = (snapshot.value! as AnyObject).description
+                self.newAllD1Amount = Int(self.allD1Amount!)! - Int(self.D1Amount!)!
+                self.DBRef1.child("table/allOrder/allD1Amount").setValue(self.newAllD1Amount)
+            })
+        }
         let cancelButton1 = UIAlertAction(title: "キャンセル", style: UIAlertAction.Style.cancel, handler: nil)
         
         alertController1.addAction(okAction1)
@@ -243,84 +225,95 @@ class SubViewController: UITableViewController{
         self.SAmount = Int(self.S1AmountLabel.text!)! + Int(self.S2AmountLabel.text!)! + Int(self.S3AmountLabel.text!)!
         self.DAmount = Int(self.D1AmountLabel.text!)!
         
-        let alertController3 = UIAlertController(title: "キャンセル",message: "", preferredStyle: UIAlertController.Style.alert)
+        let alertController3 = UIAlertController(title: "注文取消",message: "注文を取消します", preferredStyle: UIAlertController.Style.alert)
         let okAction3 = UIAlertAction(title: "OK", style: UIAlertAction.Style.default){ (action: UIAlertAction) in
-            //self.Ssetamount = self.damount - self.bamount
-            //全食数の更新
-            let defaultPlaceW1 = self.DBRef1.child("table/allOrder/allW1Amount")
-            defaultPlaceW1.observeSingleEvent(of: .value, with: { (snapshot) in
-                self.allW1Amount = (snapshot.value! as AnyObject).description
-                self.newAllW1Amount = Int(self.allW1Amount!)! + Int(self.W1Amount!)!
-                self.DBRef1.child("table/allOrder/allW1Amount").setValue(self.newAllW1Amount)
-                self.DBRef1.child("table/order").child(self.tableNumber!).child("W1Amount").setValue(0)
-            })
-            let defaultPlaceW2 = self.DBRef1.child("table/allOrder/allW2Amount")
-            defaultPlaceW2.observeSingleEvent(of: .value, with: { (snapshot) in
-                self.allW2Amount = (snapshot.value! as AnyObject).description
-                self.newAllW2Amount = Int(self.allW2Amount!)! + Int(self.W2Amount!)!
-                self.DBRef1.child("table/allOrder/allW2Amount").setValue(self.newAllW2Amount)
-                self.DBRef1.child("table/order").child(self.tableNumber!).child("W2Amount").setValue(0)
-            })
-            let defaultPlaceP1 = self.DBRef1.child("table/allOrder/allP1Amount")
-            defaultPlaceP1.observeSingleEvent(of: .value, with: { (snapshot) in
-                self.allP1Amount = (snapshot.value! as AnyObject).description
-                self.newAllP1Amount = Int(self.allP1Amount!)! + Int(self.P1Amount!)!
-                self.DBRef1.child("table/allOrder/allP1Amount").setValue(self.newAllP1Amount)
-                self.DBRef1.child("table/order").child(self.tableNumber!).child("P1Amount").setValue(0)
-            })
-            let defaultPlaceP2 = self.DBRef1.child("table/allOrder/allP2Amount")
-            defaultPlaceP2.observeSingleEvent(of: .value, with: { (snapshot) in
-                self.allP2Amount = (snapshot.value! as AnyObject).description
-                self.newAllP2Amount = Int(self.allP2Amount!)! + Int(self.P2Amount!)!
-                self.DBRef1.child("table/allOrder/allP2Amount").setValue(self.newAllP2Amount)
-                self.DBRef1.child("table/order").child(self.tableNumber!).child("P2Amount").setValue(0)
-            })
-            let defaultPlaceS1 = self.DBRef1.child("table/allOrder/allS1Amount")
-            defaultPlaceS1.observeSingleEvent(of: .value, with: { (snapshot) in
-                self.allS1Amount = (snapshot.value! as AnyObject).description
-                self.newAllS1Amount = Int(self.allS1Amount!)! + Int(self.S1Amount!)!
-                self.DBRef1.child("table/allOrder/allS1Amount").setValue(self.newAllS1Amount)
-                self.DBRef1.child("table/order").child(self.tableNumber!).child("S1Amount").setValue(0)
-            })
-            let defaultPlaceS2 = self.DBRef1.child("table/allOrder/allS2Amount")
-            defaultPlaceS2.observeSingleEvent(of: .value, with: { (snapshot) in
-                self.allS2Amount = (snapshot.value! as AnyObject).description
-                self.newAllS2Amount = Int(self.allS2Amount!)! + Int(self.S2Amount!)!
-                self.DBRef1.child("table/allOrder/allS2Amount").setValue(self.newAllS2Amount)
-                self.DBRef1.child("table/order").child(self.tableNumber!).child("S2Amount").setValue(0)
-            })
-            let defaultPlaceS3 = self.DBRef1.child("table/allOrder/allS3Amount")
-            defaultPlaceS3.observeSingleEvent(of: .value, with: { (snapshot) in
-                self.allS3Amount = (snapshot.value! as AnyObject).description
-                self.newAllS3Amount = Int(self.allS3Amount!)! + Int(self.S3Amount!)!
-                self.DBRef1.child("table/allOrder/allS3Amount").setValue(self.newAllS3Amount)
-                self.DBRef1.child("table/order").child(self.tableNumber!).child("S3Amount").setValue(0)
-            })
-            let defaultPlaceD1 = self.DBRef1.child("table/allOrder/allD1Amount")
-            defaultPlaceD1.observeSingleEvent(of: .value, with: { (snapshot) in
-                self.allD1Amount = (snapshot.value! as AnyObject).description
-                self.newAllD1Amount = Int(self.allD1Amount!)! + Int(self.D1Amount!)!
-                self.DBRef1.child("table/allOrder/allD1Amount").setValue(self.newAllD1Amount)
-                self.DBRef1.child("table/order").child(self.tableNumber!).child("D1Amount").setValue(0)
-            })
-            
-            //オーダーリセット
-            self.DBRef1.child("table/order").child(self.tableNumber!).child("time").setValue(0)
-            self.DBRef1.child("table/order").child(self.tableNumber!).child("completetime").setValue(0)
-            self.DBRef1.child("table/status").child(self.tableNumber!).setValue(0)
-            //            self.DBRef1.child("table/WStatus").child(self.tableNumber!).setValue(0)
-            //            self.DBRef1.child("table/PStatus").child(self.tableNumber!).setValue(0)
-            //            self.DBRef1.child("table/SStatus").child(self.tableNumber!).setValue(0)
-            //            self.DBRef1.child("table/DStatus").child(self.tableNumber!).setValue(0)
-            //self.DBRef1.child("table/setamount").child(self.tableNumber!).setValue(["bset":0,"sset":0,"bsset":0,"noice":0])
-            //オーダーキーのリセット
-            var hogekey : String?
-            let defaultPlaceOK = self.DBRef1.child("table/orderKey").child(self.tableNumber!)
-            defaultPlaceOK.observeSingleEvent(of: .value, with: { (snapshot) in
-                hogekey = (snapshot.value! as AnyObject).description
-                self.DBRef1.child("inData").child(hogekey!).setValue(nil)
-                self.DBRef1.child("table/orderOrder").child(hogekey!).setValue(nil)
-                self.DBRef1.child("table/orderKey").child(self.tableNumber!).setValue(nil)
+            let defaultPlaceX = self.DBRef1.child("table/status").child(self.tableNumber!)
+            defaultPlaceX.observeSingleEvent(of: .value, with: { (snapshot) in
+                self.status = (snapshot.value! as AnyObject).description
+                if Int(self.status!) == 2 || Int(self.status!) == 3 || Int(self.status!) == 4{
+                    //取消禁止
+                    let alertController = UIAlertController(title: "調理中の商品があります",message: "誰かにいってね", preferredStyle: UIAlertController.Style.alert)
+                    let OKButton = UIAlertAction(title: "OK", style: UIAlertAction.Style.cancel, handler: nil)
+                    alertController.addAction(OKButton)
+                    self.present(alertController,animated: true,completion: nil)
+                }else{
+                    //全食数の更新
+                    let defaultPlaceW1 = self.DBRef1.child("table/allOrder/allW1Amount")
+                    defaultPlaceW1.observeSingleEvent(of: .value, with: { (snapshot) in
+                        self.allW1Amount = (snapshot.value! as AnyObject).description
+                        self.newAllW1Amount = Int(self.allW1Amount!)! + Int(self.W1Amount!)!
+                        self.DBRef1.child("table/allOrder/allW1Amount").setValue(self.newAllW1Amount)
+                        self.DBRef1.child("table/order").child(self.tableNumber!).child("W1Amount").setValue(0)
+                    })
+                    let defaultPlaceW2 = self.DBRef1.child("table/allOrder/allW2Amount")
+                    defaultPlaceW2.observeSingleEvent(of: .value, with: { (snapshot) in
+                        self.allW2Amount = (snapshot.value! as AnyObject).description
+                        self.newAllW2Amount = Int(self.allW2Amount!)! + Int(self.W2Amount!)!
+                        self.DBRef1.child("table/allOrder/allW2Amount").setValue(self.newAllW2Amount)
+                        self.DBRef1.child("table/order").child(self.tableNumber!).child("W2Amount").setValue(0)
+                    })
+                    let defaultPlaceP1 = self.DBRef1.child("table/allOrder/allP1Amount")
+                    defaultPlaceP1.observeSingleEvent(of: .value, with: { (snapshot) in
+                        self.allP1Amount = (snapshot.value! as AnyObject).description
+                        self.newAllP1Amount = Int(self.allP1Amount!)! + Int(self.P1Amount!)!
+                        self.DBRef1.child("table/allOrder/allP1Amount").setValue(self.newAllP1Amount)
+                        self.DBRef1.child("table/order").child(self.tableNumber!).child("P1Amount").setValue(0)
+                    })
+                    let defaultPlaceP2 = self.DBRef1.child("table/allOrder/allP2Amount")
+                    defaultPlaceP2.observeSingleEvent(of: .value, with: { (snapshot) in
+                        self.allP2Amount = (snapshot.value! as AnyObject).description
+                        self.newAllP2Amount = Int(self.allP2Amount!)! + Int(self.P2Amount!)!
+                        self.DBRef1.child("table/allOrder/allP2Amount").setValue(self.newAllP2Amount)
+                        self.DBRef1.child("table/order").child(self.tableNumber!).child("P2Amount").setValue(0)
+                    })
+                    let defaultPlaceS1 = self.DBRef1.child("table/allOrder/allS1Amount")
+                    defaultPlaceS1.observeSingleEvent(of: .value, with: { (snapshot) in
+                        self.allS1Amount = (snapshot.value! as AnyObject).description
+                        self.newAllS1Amount = Int(self.allS1Amount!)! + Int(self.S1Amount!)!
+                        self.DBRef1.child("table/allOrder/allS1Amount").setValue(self.newAllS1Amount)
+                        self.DBRef1.child("table/order").child(self.tableNumber!).child("S1Amount").setValue(0)
+                    })
+                    let defaultPlaceS2 = self.DBRef1.child("table/allOrder/allS2Amount")
+                    defaultPlaceS2.observeSingleEvent(of: .value, with: { (snapshot) in
+                        self.allS2Amount = (snapshot.value! as AnyObject).description
+                        self.newAllS2Amount = Int(self.allS2Amount!)! + Int(self.S2Amount!)!
+                        self.DBRef1.child("table/allOrder/allS2Amount").setValue(self.newAllS2Amount)
+                        self.DBRef1.child("table/order").child(self.tableNumber!).child("S2Amount").setValue(0)
+                    })
+                    let defaultPlaceS3 = self.DBRef1.child("table/allOrder/allS3Amount")
+                    defaultPlaceS3.observeSingleEvent(of: .value, with: { (snapshot) in
+                        self.allS3Amount = (snapshot.value! as AnyObject).description
+                        self.newAllS3Amount = Int(self.allS3Amount!)! + Int(self.S3Amount!)!
+                        self.DBRef1.child("table/allOrder/allS3Amount").setValue(self.newAllS3Amount)
+                        self.DBRef1.child("table/order").child(self.tableNumber!).child("S3Amount").setValue(0)
+                    })
+                    let defaultPlaceD1 = self.DBRef1.child("table/allOrder/allD1Amount")
+                    defaultPlaceD1.observeSingleEvent(of: .value, with: { (snapshot) in
+                        self.allD1Amount = (snapshot.value! as AnyObject).description
+                        self.newAllD1Amount = Int(self.allD1Amount!)! + Int(self.D1Amount!)!
+                        self.DBRef1.child("table/allOrder/allD1Amount").setValue(self.newAllD1Amount)
+                        self.DBRef1.child("table/order").child(self.tableNumber!).child("D1Amount").setValue(0)
+                    })
+                    
+                    //オーダーリセット
+                    self.DBRef1.child("table/order").child(self.tableNumber!).child("time").setValue(0)
+                    self.DBRef1.child("table/order").child(self.tableNumber!).child("completetime").setValue(0)
+                    self.DBRef1.child("table/status").child(self.tableNumber!).setValue(0)
+                    //            self.DBRef1.child("table/WStatus").child(self.tableNumber!).setValue(0)
+                    //            self.DBRef1.child("table/PStatus").child(self.tableNumber!).setValue(0)
+                    //            self.DBRef1.child("table/SStatus").child(self.tableNumber!).setValue(0)
+                    //            self.DBRef1.child("table/DStatus").child(self.tableNumber!).setValue(0)
+                    //self.DBRef1.child("table/setamount").child(self.tableNumber!).setValue(["bset":0,"sset":0,"bsset":0,"noice":0])
+                    //オーダーキーのリセット
+                    var hogekey : String?
+                    let defaultPlaceOK = self.DBRef1.child("table/orderKey").child(self.tableNumber!)
+                    defaultPlaceOK.observeSingleEvent(of: .value, with: { (snapshot) in
+                        hogekey = (snapshot.value! as AnyObject).description
+                        self.DBRef1.child("inData").child(hogekey!).setValue(nil)
+                        self.DBRef1.child("table/orderOrder").child(hogekey!).setValue(nil)
+                        self.DBRef1.child("table/orderKey").child(self.tableNumber!).setValue(nil)
+                    })
+                }
             })
         }
         let cancelButton3 = UIAlertAction(title: "キャンセル", style: UIAlertAction.Style.cancel, handler: nil)
