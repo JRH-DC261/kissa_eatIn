@@ -500,6 +500,14 @@
                         <outlet property="W2StepperValue" destination="L02-RI-YeD" id="wX2-1c-D5J"/>
                         <outlet property="cancelButton" destination="a2t-HL-zIz" id="ys0-bA-s3g"/>
                         <outlet property="orderButton" destination="qzp-cS-SK5" id="xKD-yX-DZ0"/>
+                        <outletCollection property="WCell" destination="ghT-Je-mwJ" collectionClass="NSMutableArray" id="tWn-Wq-exC"/>
+                        <outletCollection property="WCell" destination="9pV-Ou-IRj" collectionClass="NSMutableArray" id="QuR-KV-n4a"/>
+                        <outletCollection property="PCell" destination="D7h-G2-sjU" collectionClass="NSMutableArray" id="pTY-gQ-ISM"/>
+                        <outletCollection property="PCell" destination="j2H-Wu-CDu" collectionClass="NSMutableArray" id="y4s-hL-AE5"/>
+                        <outletCollection property="SCell" destination="5w6-o4-oj9" collectionClass="NSMutableArray" id="RCf-QP-iyJ"/>
+                        <outletCollection property="SCell" destination="YqB-O8-owe" collectionClass="NSMutableArray" id="Lm9-63-og8"/>
+                        <outletCollection property="SCell" destination="d48-Uf-qkH" collectionClass="NSMutableArray" id="Glo-sB-uxh"/>
+                        <outletCollection property="DCell" destination="M68-Wf-nJu" collectionClass="NSMutableArray" id="3Aa-KJ-2TH"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="orX-Ge-MA4" userLabel="First Responder" sceneMemberID="firstResponder"/>

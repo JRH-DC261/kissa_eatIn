@@ -35,14 +35,19 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         intstatus1 = Int(status1!)
             if intstatus1! == 0{
                 cell.detailTextLabel!.text = "空席"
+                cell.backgroundColor = UIColor.clear
             }else if intstatus1! == 1{
                 cell.detailTextLabel!.text = "注文完了"
+                cell.backgroundColor = UIColor(red:0.75, green:0.88, blue:0.90, alpha:0.75)
             }else if intstatus1! == 2{
                 cell.detailTextLabel!.text = "配膳待ち"
+                cell.backgroundColor = UIColor(red:0.98, green:0.93, blue:0.95, alpha:1.0)
             }else if intstatus1! == 3{
                 cell.detailTextLabel!.text = "食事配膳完了"
+                cell.backgroundColor = UIColor(red:0.96, green:0.92, blue:0.41, alpha:0.5)
             }else if intstatus1! == 4{
                 cell.detailTextLabel!.text = "全注文配膳完了"
+                cell.backgroundColor = UIColor(red:0.75, green:0.83, blue:0.41, alpha:0.5)
             }
         }
         return cell
@@ -51,16 +56,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableNumber = number[indexPath.row]
         //設定
-//        self.DBRef.child("table/order").child(self.number[indexPath.row]).setValue(["W1Amount":0, "W2Amount":0, "P1Amount":0, "P2Amount":0, "S1Amount":0, "S2Amount":0, "S3Amount":0, "D1Amount":0, "time":0])
-//        self.DBRef.child("table/allOrder").setValue(["allW1Amount":0, "allW2Amount":0, "allP1Amount":0, "allP2Amount":0, "allS1Amount":0, "allS2Amount":0, "allS3Amount":0, "allD1Amount":0])
+        //self.DBRef.child("table/order").child(self.number[indexPath.row]).setValue(["W1Amount":0, "W2Amount":0, "P1Amount":0, "P2Amount":0, "S1Amount":0, "S2Amount":0, "S3Amount":0, "D1Amount":0, "time":0])
+        //self.DBRef.child("table/allOrder").setValue(["allW1Amount":0, "allW2Amount":0, "allP1Amount":0, "allP2Amount":0, "allS1Amount":0, "allS2Amount":0, "allS3Amount":0, "allD1Amount":0])
         //self.DBRef.child("table/status").child(self.number[indexPath.row]).setValue(0)
+        //self.DBRef.child("table/WStatus").child(self.number[indexPath.row]).setValue(0)
+        //self.DBRef.child("table/PStatus").child(self.number[indexPath.row]).setValue(0)
+        //self.DBRef.child("table/SStatus").child(self.number[indexPath.row]).setValue(0)
+        //self.DBRef.child("table/DStatus").child(self.number[indexPath.row]).setValue(0)
         
-        //self.DBRef.child("table/bstatus").child(self.number[indexPath.row]).setValue(0)
-        //self.DBRef.child("table/tbstatus").child(self.number[indexPath.row]).setValue(0)
-        //self.DBRef.child("table/sstatus").child(self.number[indexPath.row]).setValue(0)
-        //self.DBRef.child("table/dstatus").child(self.number[indexPath.row]).setValue(0)
-        //self.DBRef.child("table/dxstatus").child(self.number[indexPath.row]).setValue(0)
-        //self.DBRef.child("table/destatus").child(self.number[indexPath.row]).setValue(0)
         //self.DBRef.child("table/setamount").child(self.number[indexPath.row]).setValue(["bset":0,"sset":0,"bsset":0,"noice":0])
         
         performSegue(withIdentifier:"toNextView", sender: nil)
