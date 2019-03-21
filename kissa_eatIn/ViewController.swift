@@ -38,16 +38,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 cell.backgroundColor = UIColor.clear
             }else if intstatus1! == 1{
                 cell.detailTextLabel!.text = "注文完了"
-                cell.backgroundColor = UIColor(red:0.75, green:0.88, blue:0.90, alpha:0.75)
+                cell.backgroundColor = UIColor(red:0.81, green:0.91, blue:0.92, alpha:1.0)
             }else if intstatus1! == 2{
                 cell.detailTextLabel!.text = "配膳待ち"
-                cell.backgroundColor = UIColor(red:0.98, green:0.93, blue:0.95, alpha:1.0)
+                cell.backgroundColor = UIColor(red:0.96, green:0.87, blue:0.90, alpha:1.0)
             }else if intstatus1! == 3{
                 cell.detailTextLabel!.text = "食事配膳完了"
-                cell.backgroundColor = UIColor(red:0.96, green:0.92, blue:0.41, alpha:0.5)
+                cell.backgroundColor = UIColor(red:0.98, green:0.96, blue:0.70, alpha:1.0)
             }else if intstatus1! == 4{
                 cell.detailTextLabel!.text = "全注文配膳完了"
-                cell.backgroundColor = UIColor(red:0.75, green:0.83, blue:0.41, alpha:0.5)
+                cell.backgroundColor = UIColor(red:0.87, green:0.91, blue:0.70, alpha:1.0)
             }
         }
         return cell

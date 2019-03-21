@@ -70,6 +70,10 @@ class SubViewController: UITableViewController{
     var S2Amount : String?
     var S3Amount : String?
     var D1Amount : String?
+    var totalWAmount : Int?
+    var totalPAmount : Int?
+    var totalSAmount : Int?
+    var totalDAmount : Int?
     var hoge : String?
     var WAmount = 0
     var PAmount = 0
@@ -149,12 +153,12 @@ class SubViewController: UITableViewController{
             self.S2Amount = self.S2AmountLabel.text
             self.S3Amount = self.S3AmountLabel.text
             self.D1Amount = self.D1AmountLabel.text
-            //            self.Bsetamount = self.damount - self.samount
-            //            self.Ssetamount = self.damount - self.bamount
-            //            self.BSsetamount = self.bamount + self.samount - self.damount
-            //            self.noIceAmount = self.damount - self.deamount
+            self.totalWAmount = Int(self.W1Amount!)! + Int(self.W2Amount!)!
+            self.totalSAmount = Int(self.S1Amount!)! + Int(self.S2Amount!)! + Int(self.S3Amount!)!
+            self.totalPAmount = Int(self.P1Amount!)! + Int(self.P2Amount!)!
+            self.totalDAmount = Int(self.D1Amount!)!
             
-            self.DBRef1.child("table/order").child(self.tableNumber!).setValue(["W1Amount":self.W1Amount!, "W2Amount":self.W2Amount!, "P1Amount":self.P1Amount!, "P2Amount":self.P2Amount!, "S1Amount":self.S1Amount!, "S2Amount":self.S2Amount!, "S3Amount":self.S3Amount!, "D1Amount":self.D1Amount!, "time":ServerValue.timestamp()])
+            self.DBRef1.child("table/order").child(self.tableNumber!).setValue(["W1Amount":self.W1Amount!, "W2Amount":self.W2Amount!, "P1Amount":self.P1Amount!, "P2Amount":self.P2Amount!, "S1Amount":self.S1Amount!, "S2Amount":self.S2Amount!, "S3Amount":self.S3Amount!, "D1Amount":self.D1Amount!, "totalWAmount":self.totalWAmount!, "totalSAmount":self.totalSAmount!, "totalPAmount":self.totalPAmount!, "totalDAmount":self.totalDAmount!, "time":ServerValue.timestamp()])
             self.DBRef1.child("table/status").child(self.tableNumber!).setValue(1)
             //                    self.DBRef1.child("table/setamount").child(self.tableNumber!).setValue(["bset":self.Bsetamount,"sset":self.Ssetamount,"bsset":self.BSsetamount,"noice":self.noIceAmount])
             
@@ -237,7 +241,7 @@ class SubViewController: UITableViewController{
                 self.status = (snapshot.value! as AnyObject).description
                 if Int(self.status!) == 2 || Int(self.status!) == 3 || Int(self.status!) == 4{
                     //取消禁止
-                    let alertController = UIAlertController(title: "調理中の商品があります",message: "誰かにいってね", preferredStyle: UIAlertController.Style.alert)
+                    let alertController = UIAlertController(title: "調理中の商品があります",message: "アプリ上での注文取消はできません", preferredStyle: UIAlertController.Style.alert)
                     let OKButton = UIAlertAction(title: "OK", style: UIAlertAction.Style.cancel, handler: nil)
                     alertController.addAction(OKButton)
                     self.present(alertController,animated: true,completion: nil)
@@ -300,15 +304,19 @@ class SubViewController: UITableViewController{
                         self.DBRef1.child("table/order").child(self.tableNumber!).child("D1Amount").setValue(0)
                     })
                     
+                    self.DBRef1.child("table/order").child(self.tableNumber!).child("totalWAmount").setValue(0)
+                    self.DBRef1.child("table/order").child(self.tableNumber!).child("totalSAmount").setValue(0)
+                    self.DBRef1.child("table/order").child(self.tableNumber!).child("totalPAmount").setValue(0)
+                    self.DBRef1.child("table/order").child(self.tableNumber!).child("totalDAmount").setValue(0)
+                    
                     //オーダーリセット
                     self.DBRef1.child("table/order").child(self.tableNumber!).child("time").setValue(0)
-                    self.DBRef1.child("table/order").child(self.tableNumber!).child("completetime").setValue(0)
+                    //self.DBRef1.child("table/order").child(self.tableNumber!).child("completeTime").setValue(0)
                     self.DBRef1.child("table/status").child(self.tableNumber!).setValue(0)
-                    //            self.DBRef1.child("table/WStatus").child(self.tableNumber!).setValue(0)
-                    //            self.DBRef1.child("table/PStatus").child(self.tableNumber!).setValue(0)
-                    //            self.DBRef1.child("table/SStatus").child(self.tableNumber!).setValue(0)
-                    //            self.DBRef1.child("table/DStatus").child(self.tableNumber!).setValue(0)
-                    //self.DBRef1.child("table/setamount").child(self.tableNumber!).setValue(["bset":0,"sset":0,"bsset":0,"noice":0])
+                    self.DBRef1.child("table/WStatus").child(self.tableNumber!).setValue(0)
+                    self.DBRef1.child("table/PStatus").child(self.tableNumber!).setValue(0)
+                    self.DBRef1.child("table/SStatus").child(self.tableNumber!).setValue(0)
+                    self.DBRef1.child("table/DStatus").child(self.tableNumber!).setValue(0)
                     //オーダーキーのリセット
                     var hogekey : String?
                     let defaultPlaceOK = self.DBRef1.child("table/orderKey").child(self.tableNumber!)
@@ -446,11 +454,11 @@ class SubViewController: UITableViewController{
             self.WStatus = (snapshot.value! as AnyObject).description
             if Int(self.WStatus!) == 1{
                 for cell in self.WCell {
-                    cell.backgroundColor = UIColor(red:0.98, green:0.93, blue:0.95, alpha:1.0)
+                    cell.backgroundColor = UIColor(red:0.96, green:0.87, blue:0.90, alpha:1.0)
                 }
             }else if Int(self.WStatus!) == 2{
                 for cell in self.WCell {
-                    cell.backgroundColor = UIColor(red:0.75, green:0.83, blue:0.41, alpha:0.5)
+                    cell.backgroundColor = UIColor(red:0.87, green:0.91, blue:0.70, alpha:1.0)
                 }
             }else{
                 for cell in self.WCell {
@@ -463,11 +471,11 @@ class SubViewController: UITableViewController{
             self.PStatus = (snapshot.value! as AnyObject).description
             if Int(self.PStatus!) == 1{
                 for cell in self.PCell {
-                    cell.backgroundColor = UIColor(red:0.98, green:0.93, blue:0.95, alpha:1.0)
+                    cell.backgroundColor = UIColor(red:0.96, green:0.87, blue:0.90, alpha:1.0)
                 }
             }else if Int(self.PStatus!) == 2{
                 for cell in self.PCell {
-                    cell.backgroundColor = UIColor(red:0.75, green:0.83, blue:0.41, alpha:0.5)
+                    cell.backgroundColor = UIColor(red:0.87, green:0.91, blue:0.70, alpha:1.0)
                 }
             }else{
                 for cell in self.PCell {
@@ -480,11 +488,11 @@ class SubViewController: UITableViewController{
             self.SStatus = (snapshot.value! as AnyObject).description
             if Int(self.SStatus!) == 1{
                 for cell in self.SCell {
-                    cell.backgroundColor = UIColor(red:0.98, green:0.93, blue:0.95, alpha:1.0)
+                    cell.backgroundColor = UIColor(red:0.96, green:0.87, blue:0.90, alpha:1.0)
                 }
             }else if Int(self.SStatus!) == 2{
                 for cell in self.SCell {
-                    cell.backgroundColor = UIColor(red:0.75, green:0.83, blue:0.41, alpha:0.5)
+                    cell.backgroundColor = UIColor(red:0.87, green:0.91, blue:0.70, alpha:1.0)
                 }
             }else{
                 for cell in self.SCell {
@@ -497,11 +505,11 @@ class SubViewController: UITableViewController{
             self.DStatus = (snapshot.value! as AnyObject).description
             if Int(self.DStatus!) == 1{
                 for cell in self.DCell {
-                    cell.backgroundColor = UIColor(red:0.98, green:0.93, blue:0.95, alpha:1.0)
+                    cell.backgroundColor = UIColor(red:0.96, green:0.87, blue:0.90, alpha:1.0)
                 }
             }else if Int(self.DStatus!) == 2{
                 for cell in self.DCell {
-                    cell.backgroundColor = UIColor(red:0.75, green:0.83, blue:0.41, alpha:0.5)
+                    cell.backgroundColor = UIColor(red:0.87, green:0.91, blue:0.70, alpha:1.0)
                 }
             }else{
                 for cell in self.DCell {
