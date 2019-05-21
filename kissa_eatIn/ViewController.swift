@@ -12,15 +12,15 @@ import Firebase
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var TableView: UITableView!
-    let number = ["001","002","003","004","005","006","007","008","009","010","011","012","013","014","015","016","017","018"]
+    let number = ["001","002","003","004","005","006","007","008","009","010","011","012","013","014","015","016","017","018","019","020","021","022","023","024","025","026","027","028","029","030","031","032","033","034","035","036","037","038","039","040"]
     var tableNumber : String?
     // インスタンス変数
     var DBRef:DatabaseReference!
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return number.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // セルを取得する
         let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "MainCell", for: indexPath)
@@ -52,7 +52,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableNumber = number[indexPath.row]
         //設定
@@ -63,13 +63,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         //self.DBRef.child("table/PStatus").child(self.number[indexPath.row]).setValue(0)
         //self.DBRef.child("table/SStatus").child(self.number[indexPath.row]).setValue(0)
         //self.DBRef.child("table/DStatus").child(self.number[indexPath.row]).setValue(0)
-        
+
         //self.DBRef.child("table/setamount").child(self.number[indexPath.row]).setValue(["bset":0,"sset":0,"bsset":0,"noice":0])
-        
+
         performSegue(withIdentifier:"toNextView", sender: nil)
         tableView.deselectRow(at: indexPath, animated:true)
     }
-    
+
     //次のビューに渡す値を設定
     override func  prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let nextVC = segue.destination as! SubViewController
@@ -77,14 +77,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         nextVC.navigationItem.title = "Table " + tableNumber!
         nextVC.tableNumber = tableNumber!
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         //インスタンスを作成
         DBRef = Database.database().reference()
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
