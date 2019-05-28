@@ -26,14 +26,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         // セルを取得する
         let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "MainCell", for: indexPath)
         // セルに表示する値を設定する
-        cell.textLabel!.text = "Table " + number[indexPath.row]
-        cell.detailTextLabel!.text = "空席"
+        cell.textLabel!.text = "Order " + number[indexPath.row]
+        //cell.detailTextLabel!.text = "空席"
         //席ステータス表示
         var status1 : String?
         var intstatus1 : Int?
         let defaultPlace = DBRef.child("table/status").child(number[indexPath.row])
-        defaultPlace.observe(.value) { (snap: DataSnapshot) in status1 = (snap.value! as AnyObject).description
-        intstatus1 = Int(status1!)
+        //defaultPlace.observe(.value) { (snap: DataSnapshot) in
+        defaultPlace.observeSingleEvent(of: .value, with: { (snapshot) in
+            status1 = (snapshot.value! as AnyObject).description
+            intstatus1 = Int(status1!)
             if intstatus1! == 0{
                 cell.detailTextLabel!.text = "空席"
                 cell.backgroundColor = UIColor.clear
@@ -49,8 +51,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             }else if intstatus1! == 4{
                 cell.detailTextLabel!.text = "全注文配膳完了"
                 cell.backgroundColor = UIColor(red:0.87, green:0.91, blue:0.70, alpha:1.0)
+            }else if intstatus1! == 5{
+                cell.detailTextLabel!.text = "退店済"
+                cell.backgroundColor = UIColor(red:0.99, green:0.92, blue:0.82, alpha:1.0)
             }
-        }
+        })
         return cell
     }
 
@@ -84,11 +89,23 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         // Do any additional setup after loading the view, typically from a nib.
         //インスタンスを作成
         DBRef = Database.database().reference()
+        
+        Timer.scheduledTimer(
+            timeInterval: 1,
+            target: self,
+            selector: #selector(self.newArray(_:)),
+            userInfo: nil,
+            repeats: true
+        )
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    @objc func newArray(_ sender: Timer) {
+        self.TableView.reloadData()
     }
 
 }
