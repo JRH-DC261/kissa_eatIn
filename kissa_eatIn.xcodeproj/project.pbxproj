@@ -15,6 +15,7 @@
 		AA550C61213CB9F2009F4680 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA550C60213CB9F2009F4680 /* Assets.xcassets */; };
 		AA550C64213CB9F2009F4680 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA550C62213CB9F2009F4680 /* LaunchScreen.storyboard */; };
 		AA755DBF21800B2A003E482B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA755DBE21800B2A003E482B /* GoogleService-Info.plist */; };
+		EA6257D422CB2E10001BDCBB /* TableMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6257D322CB2E10001BDCBB /* TableMenuViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		AA550C65213CB9F2009F4680 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AA755DBE21800B2A003E482B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E4402060762AE57ECBC19BDF /* Pods-test.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.release.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.release.xcconfig"; sourceTree = "<group>"; };
+		EA6257D322CB2E10001BDCBB /* TableMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableMenuViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +86,7 @@
 			children = (
 				AA550C59213CB9EF009F4680 /* AppDelegate.swift */,
 				AA550C5B213CB9EF009F4680 /* ViewController.swift */,
+				EA6257D322CB2E10001BDCBB /* TableMenuViewController.swift */,
 				AA10E9CC213D0D0B0027551D /* SubViewController.swift */,
 				AA550C5D213CB9EF009F4680 /* Main.storyboard */,
 				AA550C60213CB9F2009F4680 /* Assets.xcassets */,
@@ -214,6 +217,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA6257D422CB2E10001BDCBB /* TableMenuViewController.swift in Sources */,
 				AA10E9CD213D0D0B0027551D /* SubViewController.swift in Sources */,
 				AA550C5C213CB9EF009F4680 /* ViewController.swift in Sources */,
 				AA550C5A213CB9EF009F4680 /* AppDelegate.swift in Sources */,
@@ -363,14 +367,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8DYG42U2XW;
+				DEVELOPMENT_TEAM = SB8L2N8K9P;
 				INFOPLIST_FILE = "$(SRCROOT)/kissa_eatIn/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "t-hori.kissa-eatIn";
+				PRODUCT_BUNDLE_IDENTIFIER = "t-hori.kissa-eatIn...";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
@@ -385,14 +389,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8DYG42U2XW;
+				DEVELOPMENT_TEAM = SB8L2N8K9P;
 				INFOPLIST_FILE = "$(SRCROOT)/kissa_eatIn/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "t-hori.kissa-eatIn";
+				PRODUCT_BUNDLE_IDENTIFIER = "t-hori.kissa-eatIn...";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;

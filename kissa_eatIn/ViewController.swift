@@ -12,16 +12,16 @@ import Firebase
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var TableView: UITableView!
-    let number = ["001","002","003","004","005","006","007","008","009","010","011","012","013","014","015","016","017","018","019","020","021","022","023","024"]
+    let number = ["001","002","003","004","005","006","007","008","009","010","011","012","013","014","015","016","017","018","019","020","021","022","023","024","025","026","027","028","029","030"]
     //let number = ["001","002","003","004","005","006","007","008","009","010","011","012","013","014","015","016","017","018","019","020","021","022","023","024","025","026","027","028","029","030","031","032","033","034","035","036","037","038","039","040"]
-    var tableNumber : String?
+    var orderNumber : String?
     // インスタンス変数
     var DBRef:DatabaseReference!
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return number.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // セルを取得する
         let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "MainCell", for: indexPath)
@@ -58,9 +58,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         })
         return cell
     }
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableNumber = number[indexPath.row]
+        orderNumber = number[indexPath.row]
         //設定
         //self.DBRef.child("table/order").child(self.number[indexPath.row]).setValue(["W1Amount":0, "W2Amount":0, "P1Amount":0, "P2Amount":0, "S1Amount":0, "S2Amount":0, "S3Amount":0, "D1Amount":0, "time":0])
         //self.DBRef.child("table/allOrder").setValue(["allW1Amount":0, "allW2Amount":0, "allP1Amount":0, "allP2Amount":0, "allS1Amount":0, "allS2Amount":0, "allS3Amount":0, "allD1Amount":0])
@@ -69,21 +69,27 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         //self.DBRef.child("table/PStatus").child(self.number[indexPath.row]).setValue(0)
         //self.DBRef.child("table/SStatus").child(self.number[indexPath.row]).setValue(0)
         //self.DBRef.child("table/DStatus").child(self.number[indexPath.row]).setValue(0)
-
+        
         //self.DBRef.child("table/setamount").child(self.number[indexPath.row]).setValue(["bset":0,"sset":0,"bsset":0,"noice":0])
-
+        
         performSegue(withIdentifier:"toNextView", sender: nil)
         tableView.deselectRow(at: indexPath, animated:true)
     }
-
+    
     //次のビューに渡す値を設定
     override func  prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let nextVC = segue.destination as! SubViewController
-        let _ = nextVC.view
-        nextVC.navigationItem.title = "Table " + tableNumber!
-        nextVC.tableNumber = tableNumber!
+        if segue.identifier == "toNextView" {
+            let nextVC = segue.destination as! SubViewController
+            let _ = nextVC.view
+            nextVC.navigationItem.title = "Order " + orderNumber!
+            nextVC.orderNumber = orderNumber!
+        } else if segue.identifier == "toTableMenu" {
+            let nextVC = segue.destination as! TableMenuViewController
+            let _ = nextVC.view
+            nextVC.orderNumber = "999"
+        }
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -98,7 +104,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             repeats: true
         )
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -107,5 +113,5 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @objc func newArray(_ sender: Timer) {
         self.TableView.reloadData()
     }
-
+    
 }
